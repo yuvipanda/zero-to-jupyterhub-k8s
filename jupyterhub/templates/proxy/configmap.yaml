@@ -1,0 +1,15 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: traefik-config
+data:
+  traefik.toml: |
+    logLevel = "INFO"
+    defaultEntryPoints = ["http", "ws"]
+
+    ProvidersThrottleDuration = "0s"
+    graceTimeout = "0s"
+
+    [kubernetes]
+    namespaces = [{{ .Release.Namespace | quote }}]
+    labelSelector = "heritage=jupyterhub"

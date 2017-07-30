@@ -73,11 +73,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - name: CONFIGPROXY_AUTH_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: hub-secret
-              key: proxy.token
         {{ range $key, $value := .Values.hub.extraEnv -}}
         - name: {{ $key | quote }}
           value: {{ $value | quote }}

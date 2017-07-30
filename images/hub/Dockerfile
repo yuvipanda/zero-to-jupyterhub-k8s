@@ -2,18 +2,18 @@ FROM ubuntu:17.04
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-      git \
-      python3 \
       python3-dev \
+      python3 \
       python3-pip \
       python3-setuptools \
+      git \
+      curl \
       libcurl4-openssl-dev \
       libssl-dev \
       build-essential \
       npm \
-      nodejs-legacy \
-      && \
-    apt-get purge && apt-get clean
+      nodejs-legacy && \
+     apt-get purge && apt-get clean
 
 ARG NB_USER=jovyan
 ARG NB_UID=1000
@@ -43,7 +43,7 @@ RUN pip3 install --no-cache-dir \
          cryptography==2.0.3
 
 RUN pip3 --no-cache-dir install git+https://github.com/jupyterhub/oauthenticator@80676a3e
-RUN pip3 --no-cache-dir install git+https://github.com/jupyterhub/kubespawner@1a27374
+RUN pip3 --no-cache-dir install git+https://github.com/jupyterhub/kubespawner@683ca806
 
 ADD jupyterhub_config.py /srv/jupyterhub_config.py
 ADD cull_idle_servers.py /usr/local/bin/cull_idle_servers.py

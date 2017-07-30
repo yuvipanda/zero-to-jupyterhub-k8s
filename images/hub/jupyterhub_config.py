@@ -36,16 +36,11 @@ AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
 
 c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
 
-# Connect to a proxy running in a different pod
-c.ConfigurableHTTPProxy.api_url = 'http://{}:{}'.format(os.environ['PROXY_API_SERVICE_HOST'], int(os.environ['PROXY_API_SERVICE_PORT']))
-c.ConfigurableHTTPProxy.should_start = False
+c.JupyterHub.proxy_class = 'kubespawner.proxy.KubeIngressProxy'
 
 # Check that the proxy has routes appropriately setup
 # This isn't the best named setting :D
-c.JupyterHub.last_activity_interval = 60
-
-# Max number of servers that can be spawning at any one time
-c.JupyterHub.concurrent_spawn_limit = get_config('hub.concurrent-spawn-limit')
+c.JupyterHub.last_activity_interval = 60 * 60
 
 c.JupyterHub.ip = os.environ['PROXY_PUBLIC_SERVICE_HOST']
 c.JupyterHub.port = int(os.environ['PROXY_PUBLIC_SERVICE_PORT'])
@@ -115,6 +110,8 @@ if lifecycle_hooks:
 # Gives spawned containers access to the API of the hub
 c.KubeSpawner.hub_connect_ip = os.environ['HUB_SERVICE_HOST']
 c.KubeSpawner.hub_connect_port = int(os.environ['HUB_SERVICE_PORT'])
+c.JupyterHub.hub_connect_ip = os.environ['HUB_SERVICE_HOST']
+c.JupyterHub.hub_connect_port = int(os.environ['HUB_SERVICE_PORT'])
 
 c.JupyterHub.hub_connect_ip = os.environ['HUB_SERVICE_HOST']
 c.JupyterHub.hub_connect_port = int(os.environ['HUB_SERVICE_PORT'])
